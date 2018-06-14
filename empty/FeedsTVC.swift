@@ -11,14 +11,23 @@ import UIKit
 class FeedsTVC: UITableViewController {
 
     let model = FeedModel()
-    let reuseIdentifier = "feedCell"
     let startDate = "2016-09-26T17:47:48"
     var endDate = "2016-09-26T17:47:48"
+    lazy var refControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refreshControl.tintColor = .gray
+        return refreshControl
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setup()
         loadData()
+    }
+    
+    func configureVC(title: String) {
+        self.title = title
     }
     
     @objc private func loadData(){
@@ -50,14 +59,11 @@ class FeedsTVC: UITableViewController {
         tableView.estimatedRowHeight = 60
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView()
-        tableView.register(UINib(nibName:"FeedCell", bundle: nil), forCellReuseIdentifier: reuseIdentifier)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(FeedCell.nib, forCellReuseIdentifier: FeedCell.identifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.identifier)
         
+        refreshControl = refControl
         self.clearsSelectionOnViewWillAppear = true
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(refresh), for: UIControlEvents.valueChanged)
-        refreshControl?.tintColor = UIColor.gray
-
     }
 
     // MARK: - Table view data source
@@ -67,10 +73,10 @@ class FeedsTVC: UITableViewController {
 
     let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! FeedCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
         
         if indexPath.row == model.countOfRows - 1 || model.countOfRows == 1 {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+            let cell  = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.identifier, for: indexPath)
             activityIndicator.center = cell.contentView.center
             activityIndicator.startAnimating()
             cell.contentView.addSubview(activityIndicator)
