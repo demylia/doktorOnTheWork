@@ -10,22 +10,6 @@ import UIKit
 import youtube_ios_player_helper
 import SDWebImage
 
-extension ContentTVC {
-    
-    enum Section: Int {
-        
-        case feed = 0, photo, video
-        
-        var sectionName: String {
-            switch self {
-            case .feed: return "Заметка"
-            case .photo: return "Фото"
-            case .video: return "Видео"
-            }
-        }
-    }
-}
-
 class ContentTVC: UITableViewController {
 
     var publication: Textable!
@@ -49,8 +33,9 @@ class ContentTVC: UITableViewController {
         tableView.register(ImageCell.self, forCellReuseIdentifier: ImageCell.identifier)
         tableView.register(PlayerCell.self, forCellReuseIdentifier: PlayerCell.identifier)
     }
+}
 
-    // MARK: - Table view data source
+extension ContentTVC {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
        
@@ -71,64 +56,75 @@ class ContentTVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        switch indexPath.section {
-        case Section.feed.rawValue: return UITableViewAutomaticDimension
-        case Section.photo.rawValue: return 200
-        case Section.video.rawValue: return 250
-        default:
-            return 0
-        }
+        guard let section = Section(rawValue: indexPath.section) else { return 0 }
+        
+        return section.height
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case Section.feed.rawValue: return Section.feed.sectionName
-        case Section.photo.rawValue: return Section.photo.sectionName
-        case Section.video.rawValue: return Section.video.sectionName
-        default:
-            return nil
-        }
+        
+        guard let section = Section(rawValue: section) else { return nil }
+        
+        return section.sectionName
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        switch indexPath.section {
-        case Section.feed.rawValue:
-            let cell = tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
+        guard let section = Section(rawValue: indexPath.section) else { return UITableViewCell() }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: section.cellIdentifier, for: indexPath)
+        if let cell = cell as? FeedCell {
             cell.reload(item: publication)
-            return cell
-        case Section.photo.rawValue:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ImageCell.identifier, for: indexPath)
-            return cell
-        case Section.video.rawValue:
-            let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath)
-            return cell
-        default:
-            return tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath)
         }
         
+        return cell
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         switch indexPath.section {
-
         case Section.photo.rawValue:
-            let previewUrl = publication.photos[indexPath.row].previewUrl
             if let cell = cell as? ImageCell {
-                cell.photoImageView.frame = cell.contentView.frame
-                cell.photoImageView?.sd_setImage(with: previewUrl!)
+                let previewUrl = publication.photos[indexPath.row].previewUrl
+                cell.reload(url: previewUrl)
             }
         case Section.video.rawValue:
             if let cell = cell as? PlayerCell {
-                cell.playerView.frame = cell.contentView.frame
-                let playerVars = ["playsinline": 1]
-                let videoId = publication.videos[indexPath.row].videoId
-                cell.playerView.load(withVideoId: videoId, playerVars: playerVars)
+                cell.reload(videoId: publication.videos[indexPath.row].videoId)
             }
         default:
             break
+        }
+    }
+}
+
+extension ContentTVC {
+    
+    enum Section: Int {
+        
+        case feed = 0, photo, video
+        
+        var sectionName: String {
+            switch self {
+            case .feed: return "Заметка"
+            case .photo: return "Фото"
+            case .video: return "Видео"
+            }
+        }
+        var height: CGFloat {
+            switch self {
+            case .feed: return UITableViewAutomaticDimension
+            case .photo: return 200
+            case.video: return 250
+            }
+        }
+        var cellIdentifier: String {
+            switch self {
+            case .feed: return FeedCell.identifier
+            case .photo: return ImageCell.identifier
+            case .video: return PlayerCell.identifier
+            }
         }
     }
 }

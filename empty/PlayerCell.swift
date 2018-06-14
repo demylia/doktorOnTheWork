@@ -23,6 +23,12 @@ class PlayerCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func reload(videoId: String) {
+        playerView.frame = contentView.frame
+        let playerVars = ["playsinline": 1]
+        playerView.load(withVideoId: videoId, playerVars: playerVars)
+    }
 
 
 }

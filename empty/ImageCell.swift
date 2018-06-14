@@ -22,4 +22,12 @@ class ImageCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func reload(url: URL?) {
+        photoImageView.frame = contentView.frame
+        
+        guard let url = url else { return }
+        
+        photoImageView?.sd_setImage(with: url)
+    }
 }
