@@ -83,7 +83,7 @@ extension FeedsTVC {
         
         if indexPath.row == model.countOfRows - 1 || model.countOfRows == 1 {
             let cell  = tableView.dequeueReusableCell(withIdentifier: UITableViewCell.identifier, for: indexPath)
-            activityIndicator.center = cell.contentView.center
+            activityIndicator.center = CGPoint(x: UIScreen.main.bounds.midX, y: cell.contentView.bounds.midY)
             activityIndicator.startAnimating()
             cell.contentView.addSubview(activityIndicator)
             
@@ -110,12 +110,11 @@ extension FeedsTVC {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if let publication = model.publicationAtIndex(indexPath.row) {
-            let vc = ContentTVC()
-            vc.publication = publication
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        guard let publication = model.publicationAtIndex(indexPath.row) else { return }
         
+            let vc = ContentTVC()
+            vc.setupVC(publication: publication)
+            navigationController?.pushViewController(vc, animated: true)
     }
 
 }

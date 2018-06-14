@@ -19,6 +19,10 @@ class ContentTVC: UITableViewController {
 
         setup()
     }
+    
+    func setupVC(publication: Textable) {
+        self.publication = publication
+    }
 
     deinit {
         Logger.log(type: .release, className: self.description)
