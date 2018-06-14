@@ -12,12 +12,19 @@ DEPENDENCIES:
   - SDWebImage
   - youtube-ios-player-helper
 
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - JASON
+    - SDWebImage
+    - youtube-ios-player-helper
+
 SPEC CHECKSUMS:
   Alamofire: 7682d43245de14874acd142ec137b144aa1dd335
   JASON: cf4d762e61428a20db8eaef2acb6a569a10c1801
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 51d042e4147cc37d3ade386ad1980bd896682b18
+PODFILE CHECKSUM: 499d88bb7790205f63e5dcdc899df5955db7dc1f
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.5.0
