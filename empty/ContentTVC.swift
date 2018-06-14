@@ -10,8 +10,7 @@ import UIKit
 import youtube_ios_player_helper
 import SDWebImage
 
-
-class ContentTVC: UITableViewController {
+extension ContentTVC {
     
     enum Section: Int {
         
@@ -24,14 +23,10 @@ class ContentTVC: UITableViewController {
             case .video: return "Видео"
             }
         }
-        var cellIdentifier: String {
-             switch self {
-            case .feed: return "feedCell"
-            case .photo: return "imageCell"
-            case .video: return "playerCell"
-            }
-        }
     }
+}
+
+class ContentTVC: UITableViewController {
 
     var publication: Textable!
     
@@ -50,9 +45,9 @@ class ContentTVC: UITableViewController {
         tableView.estimatedRowHeight = 60
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView()
-        tableView.register(UINib(nibName:"FeedCell", bundle: nil), forCellReuseIdentifier: Section.feed.cellIdentifier)
-        tableView.register(ImageCell.self, forCellReuseIdentifier: Section.photo.cellIdentifier)
-        tableView.register(PlayerCell.self, forCellReuseIdentifier: Section.video.cellIdentifier)
+        tableView.register(FeedCell.nib, forCellReuseIdentifier: FeedCell.identifier)
+        tableView.register(ImageCell.self, forCellReuseIdentifier: ImageCell.identifier)
+        tableView.register(PlayerCell.self, forCellReuseIdentifier: PlayerCell.identifier)
     }
 
     // MARK: - Table view data source
@@ -100,17 +95,17 @@ class ContentTVC: UITableViewController {
         
         switch indexPath.section {
         case Section.feed.rawValue:
-            let cell = tableView.dequeueReusableCell(withIdentifier: Section.feed.cellIdentifier, for: indexPath) as! FeedCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
             cell.reload(item: publication)
             return cell
         case Section.photo.rawValue:
-            let cell = tableView.dequeueReusableCell(withIdentifier: Section.photo.cellIdentifier, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: ImageCell.identifier, for: indexPath)
             return cell
         case Section.video.rawValue:
-            let cell = tableView.dequeueReusableCell(withIdentifier: Section.video.cellIdentifier, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: PlayerCell.identifier, for: indexPath)
             return cell
         default:
-            return tableView.dequeueReusableCell(withIdentifier: Section.feed.cellIdentifier, for: indexPath)
+            return tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath)
         }
         
     }

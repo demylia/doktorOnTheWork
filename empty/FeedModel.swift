@@ -11,6 +11,8 @@ import JASON
 
 class FeedModel: Loadable {
 
+    let startDate = "2016-09-26T17:47:48"
+    var endDate = "2016-09-26T17:47:48"
     var feedData: DNData?
     var countOfRows: Int {
         return feedData?.publications.count ?? 1
@@ -28,18 +30,18 @@ class FeedModel: Loadable {
 
     func parse(response: DNData, callBack: (State) -> ()) {
         
-        
         if self.feedData == nil {
             feedData = response
+            callBack(State.error)
         } else {
             feedData?.hasMore = response.hasMore
             feedData?.errorMessage = response.errorMessage
             feedData?.state = response.state
             
             feedData?.publications += response.publications
+            callBack(State.ok)
         }
 
-        callBack(State.ok)
     }
     
 }

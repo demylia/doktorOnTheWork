@@ -16,14 +16,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        setupRootVC()
+        
+        return true
+    }
+    
+    private func setupRootVC() {
         let vc = FeedsTVC()
-        vc.navigationItem.title = "Публикации"
+        vc.configureVC(title: "Публикации")
         let nc = UINavigationController(rootViewController: vc)
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = nc
         window?.makeKeyAndVisible()
-        
-        return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

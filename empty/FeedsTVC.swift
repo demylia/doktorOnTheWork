@@ -11,18 +11,19 @@ import UIKit
 class FeedsTVC: UITableViewController {
 
     let model = FeedModel()
-    let startDate = "2016-09-26T17:47:48"
-    var endDate = "2016-09-26T17:47:48"
+    
     lazy var refControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         refreshControl.tintColor = .gray
         return refreshControl
     }()
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setup()
+        setupUI()
         loadData()
     }
     
@@ -30,10 +31,10 @@ class FeedsTVC: UITableViewController {
         self.title = title
     }
     
-    @objc private func loadData(){
+    @objc fileprivate func loadData() {
         
         refreshControl?.endRefreshing()
-        model.loadData(path: endDate) { state in
+        model.loadData(path: model.endDate) { state in
             
             if state == .error {
                 //TODO: show error
@@ -43,9 +44,9 @@ class FeedsTVC: UITableViewController {
         }
     }
     
-    @objc private func refresh(){
+    @objc private func refresh() {
         model.feedData = nil
-        endDate = startDate
+        model.endDate = model.startDate
         loadData()
     }
 
@@ -54,24 +55,29 @@ class FeedsTVC: UITableViewController {
         Logger.log(type: .release, className: self.description)
     }
     
-    private func setup(){
+    private func setupUI() {
         
-        tableView.estimatedRowHeight = 60
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.tableFooterView = UIView()
-        tableView.register(FeedCell.nib, forCellReuseIdentifier: FeedCell.identifier)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.identifier)
+        setupTableView()
         
         refreshControl = refControl
         self.clearsSelectionOnViewWillAppear = true
     }
+    
+    private func setupTableView() {
+        tableView.estimatedRowHeight = 60
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
+        tableView.register(FeedCell.nib, forCellReuseIdentifier: FeedCell.identifier)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.identifier)
+    }
+}
 
-    // MARK: - Table view data source
+extension FeedsTVC {
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model.countOfRows
     }
-
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: FeedCell.identifier, for: indexPath) as! FeedCell
         
@@ -81,9 +87,6 @@ class FeedsTVC: UITableViewController {
             activityIndicator.startAnimating()
             cell.contentView.addSubview(activityIndicator)
             
-            //hide last separator
-            let rect = UIScreen.main.bounds.size
-            cell.separatorInset = UIEdgeInsetsMake(0, max(rect.height, rect.width), 0, 0)
             return cell
         }
         if let item = model.publicationAtIndex(indexPath.row) {
@@ -98,7 +101,7 @@ class FeedsTVC: UITableViewController {
         if (indexPath.row == model.countOfRows - 1
             && model.feedData?.hasMore == true),
             let createdAt = model.publicationAtIndex(indexPath.row)?.createdAt {
-            endDate = createdAt
+            model.endDate = createdAt
             loadData()
         } else if let feed = model.feedData, feed.hasMore != true {
             activityIndicator.stopAnimating()
@@ -114,4 +117,5 @@ class FeedsTVC: UITableViewController {
         }
         
     }
+
 }
