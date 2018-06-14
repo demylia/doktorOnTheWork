@@ -20,7 +20,7 @@ enum Logger: String {
 
 protocol Loadable: JSONParserProtocol {
     
-    func loadData(path: String, callBack: @escaping (State) -> ())
+    func loadData(date: String, callBack: @escaping (State) -> ())
 }
 
 protocol JSONParserProtocol {
@@ -30,9 +30,9 @@ protocol JSONParserProtocol {
 
 extension Loadable {
     
-    func loadData(path: String, callBack: @escaping (State) -> ()){
+    func loadData(date: String, callBack: @escaping (State) -> ()){
         
-        API.shared.performRequest(Router.Base(path: path)) { json in
+        API.shared.performRequest(Router.base(endDate: date)) { json in
             
             guard let json = json
                 else {

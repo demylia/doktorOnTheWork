@@ -40,9 +40,9 @@ enum Router {
     
     static let baseURL = NSURL(string: Router.baseURLString)
     
-    case Base(path: String)
+    case base(endDate: String)
     
-    case OtherCases
+    case other
 
 }
 
@@ -51,8 +51,8 @@ extension Router: URLRequestConvertible {
     var path: String {
         
         switch self {
-        case .Base(let path):
-            return "/api/v5/publications?take=10&endDate=" + path
+        case .base(let endDate):
+            return "/api/v5/publications?take=10&endDate=" + endDate
         default:
             return Router.baseURLString
         }
@@ -60,7 +60,7 @@ extension Router: URLRequestConvertible {
     var urlString: String {
         
         switch self {
-        case .Base:
+        case .base:
             return Router.baseURLString + path
         default:
             return Router.baseURLString
@@ -74,7 +74,7 @@ extension Router: URLRequestConvertible {
     
     var method: String {
         switch self {
-        case .Base:
+        case .base:
             return HTTPMethod.get.rawValue
         default:
             return HTTPMethod.post.rawValue

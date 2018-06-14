@@ -11,9 +11,9 @@ import UIKit
 
 enum Location: String{
     
-    case ru,by,kz,kg, com
+    case ru, by, kz, kg, com
     
-    static let all = [Location.ru,.by,.kz,.kg,.com]
+    static let allCases = [Location.ru,.by,.kz,.kg,.com]
     
     var name: String {
         
@@ -63,19 +63,16 @@ enum Location: String{
 
 func locationWithCode(code:Int) -> Location {
     switch code {
-    case 7:
-        return .kz
-    case 375:
-        return .by
-    case 996:
-        return .kg
-    default:
-        return .com
+    case 7: return .kz
+    case 375: return .by
+    case 996: return .kg
+    default: return .com
     }
 }
 
-extension Location: Equatable {}
-
-func ==(lhs: Location, rhs: Location) -> Bool {
-    return lhs.name == rhs.name
+extension Location: Equatable {
+    
+    static func ==(lhs: Location, rhs: Location) -> Bool {
+        return lhs.name == rhs.name
+    }
 }

@@ -34,7 +34,7 @@ class FeedsTVC: UITableViewController {
     @objc fileprivate func loadData() {
         
         refreshControl?.endRefreshing()
-        model.loadData(path: model.endDate) { state in
+        model.loadData(date: model.endDate) { state in
             
             if state == .error {
                 //TODO: show error

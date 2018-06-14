@@ -11,12 +11,11 @@ import youtube_ios_player_helper
 
 class PlayerCell: UITableViewCell {
 
-    var playerView: YTPlayerView!
+    lazy var playerView: YTPlayerView = { return YTPlayerView() }()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style,reuseIdentifier:reuseIdentifier)
         
-        playerView = YTPlayerView()
         contentView.addSubview(playerView)
     }
     
