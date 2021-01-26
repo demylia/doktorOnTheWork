@@ -19,21 +19,21 @@ struct API {
     static let Manager: Alamofire.SessionManager = {
         let configuration = URLSessionConfiguration
             .background(withIdentifier: "com.example.app.background")
-        
+
         var defaultHeaders = Alamofire.SessionManager.defaultHTTPHeaders
         dnDefaultsHeaders.forEach({
             defaultHeaders[$0.0] = $0.1
         })
         configuration.httpAdditionalHeaders = defaultHeaders
-        
+
         configuration.httpCookieStorage = HTTPCookieStorage.shared
         configuration.httpCookieAcceptPolicy = .always
         configuration.httpShouldSetCookies = true
-        
+
         configuration.timeoutIntervalForRequest = 18
         let sesionDelegate = SessionDelegate()
         let manager = Alamofire.SessionManager(configuration: configuration, delegate: sesionDelegate, serverTrustPolicyManager: nil)
-        
+
         return manager
     }()
     

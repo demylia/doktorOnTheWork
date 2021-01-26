@@ -31,7 +31,7 @@ class ContentTVC: UITableViewController {
     private func setup(){
         
         tableView.estimatedRowHeight = 60
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView()
         tableView.register(FeedCell.nib, forCellReuseIdentifier: FeedCell.identifier)
         tableView.register(ImageCell.self, forCellReuseIdentifier: ImageCell.identifier)
@@ -118,7 +118,7 @@ extension ContentTVC {
         }
         var height: CGFloat {
             switch self {
-            case .feed: return UITableViewAutomaticDimension
+            case .feed: return UITableView.automaticDimension
             case .photo: return 200
             case.video: return 250
             }

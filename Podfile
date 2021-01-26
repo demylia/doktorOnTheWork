@@ -11,7 +11,7 @@ use_frameworks!
 #pod 'Crashlytics'
 pod 'SDWebImage'
 pod 'JASON'
-pod 'Alamofire'
+pod 'Alamofire', '~> 4.0'
 pod "youtube-ios-player-helper"
 
 end

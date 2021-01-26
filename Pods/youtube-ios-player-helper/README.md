@@ -11,10 +11,10 @@ To run the example project; clone the repo, and run `pod install` from the Proje
 
 ## Installation
 
-YouTube-Player-iOS-Helper is available through [CocoaPods](http://cocoapods.org), to install
-it simply add the following line to your Podfile:
+YouTube-Player-iOS-Helper is available through [CocoaPods](http://cocoapods.org). To install
+the library, add the following line to your Podfile and replace "x.y.z" with the latest version.
 
-    pod "youtube-ios-player-helper", "~> 0.1.4"
+    pod "youtube-ios-player-helper", "~> x.y.z"
 
 After installing in your project and opening the workspace, to use the library:
 
@@ -36,9 +36,9 @@ working with callbacks via YTPlayerViewDelegate.
 
 ## Author
 
-Ikai Lan
-Ibrahim Ulukaya, ulukaya@google.com
-Yoshifumi Yamaguchi, yoshifumi@google.com
+- Ikai Lan
+- Ibrahim Ulukaya
+- Yoshifumi Yamaguchi
 
 ## License
 

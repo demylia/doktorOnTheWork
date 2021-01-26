@@ -1,7 +1,7 @@
 //
 // JSON.swift
 //
-// Copyright (c) 2015-2016 Damien (http://delba.io)
+// Copyright (c) 2015-2019 Damien (http://delba.io)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@
 public struct JSON {
     /// The date formatter used for date conversions
     public static var dateFormatter = DateFormatter()
-    
+
     /// The object on which any subsequent method operates
     public let object: AnyObject?
 
@@ -51,6 +51,17 @@ public struct JSON {
     */
     public init(_ data: Data?) {
         self.init(object: JSON.objectWithData(data))
+    }
+
+    /**
+        Creates an instance of JSON from a string.
+
+        - parameter data: A string
+
+        - returns: the created JSON
+    */
+    public init(_ string: String?) {
+        self.init(string?.data(using: String.Encoding.utf8))
     }
 
     /**
@@ -102,7 +113,7 @@ extension JSON {
 
         return JSON(object: nil)
     }
-    
+
     /**
         Creates a new instance of JSON.
         
@@ -113,29 +124,27 @@ extension JSON {
     public subscript(path indexes: Any...) -> JSON {
         return self[indexes]
     }
-    
+
     internal subscript(indexes: [Any]) -> JSON {
         if object == nil { return self }
-        
+
         var json = self
-        
+
         for index in indexes {
             if let string = index as? String, let object = json.nsDictionary?[string] {
                 json = JSON(object)
                 continue
             }
-            
+
             if let int = index as? Int, let object = json.nsArray?[safe: int] {
                 json = JSON(object)
                 continue
-            }
-            
-            else {
-                json = JSON(nil)
+            } else {
+                json = JSON(object: nil)
                 break
             }
         }
-        
+
         return json
     }
 }
@@ -152,8 +161,7 @@ private extension JSON {
     */
     static func objectWithData(_ data: Data?) -> Any? {
         guard let data = data else { return nil }
-        
-        return try? JSONSerialization.jsonObject(with: data, options: [])
+
+        return try? JSONSerialization.jsonObject(with: data)
     }
 }
-

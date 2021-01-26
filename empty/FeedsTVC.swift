@@ -18,7 +18,7 @@ class FeedsTVC: UITableViewController {
         refreshControl.tintColor = .gray
         return refreshControl
     }()
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+    let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +65,7 @@ class FeedsTVC: UITableViewController {
     
     private func setupTableView() {
         tableView.estimatedRowHeight = 60
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
         tableView.register(FeedCell.nib, forCellReuseIdentifier: FeedCell.identifier)
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: UITableViewCell.identifier)

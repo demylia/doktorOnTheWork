@@ -1,7 +1,7 @@
 //
 // SequenceType.swift
 //
-// Copyright (c) 2015-2016 Damien (http://delba.io)
+// Copyright (c) 2015-2019 Damien (http://delba.io)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,14 +33,14 @@ extension JSON: Sequence {
         guard let array = nsArray else {
             return AnyIterator { nil }
         }
-        
+
         var index = 0
-        
+
         return AnyIterator {
-            guard let object = array[safe: index] else  { return nil }
-            
+            guard let object = array[safe: index] else { return nil }
+
             index += 1
-            
+
             return JSON(object)
         }
     }

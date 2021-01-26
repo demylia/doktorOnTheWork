@@ -61,7 +61,7 @@ struct DNData {
     
     init(json: JSON) {
         
-        publications = json["publications"].jsonArray?.flatMap({ Publication(json: $0.json) }) ?? []
+        publications = json["publications"].jsonArray?.compactMap({ Publication(json: $0.json) }) ?? []
         errorMessage = json["errorMessage"].string
         state = json["ok"].boolValue
         hasMore = json["hasMore"].boolValue
@@ -90,8 +90,8 @@ struct Publication: Textable {
         annotation = json["annotation"].stringValue
         hasFullContent = json["hasFullContent"].boolValue
         author = Author(json: json["author"].json)
-        videos = json["videos"].jsonArray?.flatMap({ Content(json: $0.json) }) ?? []
-        photos = json["photos"].jsonArray?.flatMap({ Content(json: $0.json) }) ?? []
+        videos = json["videos"].jsonArray?.compactMap({ Content(json: $0.json) }) ?? []
+        photos = json["photos"].jsonArray?.compactMap({ Content(json: $0.json) }) ?? []
     }
     
     var countOfSection: Int {
